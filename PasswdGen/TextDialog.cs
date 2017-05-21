@@ -14,7 +14,7 @@ namespace PasswdGen
         {
             Console.Clear();
 
-            Console.WriteLine("Enter your passwd to generate new passwd");
+            Console.WriteLine("Enter some passwd to generate new passwd");
             oldPasswd = Console.ReadLine();
             return oldPasswd;
         }
@@ -22,7 +22,7 @@ namespace PasswdGen
         {
             Console.Clear();
 
-            Console.WriteLine("Enter where you will use that passwd");
+            Console.WriteLine("Enter where you want to use that passwd");
             placeToLogIn = Console.ReadLine();
             return placeToLogIn;
         }
@@ -35,7 +35,7 @@ namespace PasswdGen
             passwdToEncryptDecrypt = Console.ReadLine();
             if (passwdToEncryptDecrypt.Length !=16)
             {
-                Console.WriteLine("You enterd wrong key \r\n key have to be 16 characters long");
+                this.keyInput();
             }
             Console.Clear();
             return passwdToEncryptDecrypt;

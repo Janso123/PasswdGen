@@ -1,3 +1,5 @@
 bin
 /PasswdGen/obj
 *.pfx
+.gitignore
+.vs/PasswdGen/v15/.suo

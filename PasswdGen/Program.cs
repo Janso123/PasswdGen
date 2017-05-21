@@ -43,7 +43,7 @@ namespace PasswdGen
                 case ConsoleKey.D2:
                     Console.Clear();
                     ReadPasswdFile();
-                    Console.WriteLine("Click enny key to continue");
+                    Console.WriteLine("Click ENTER to continue");
                     Console.ReadLine();
                     Console.Clear();
                     return true;
