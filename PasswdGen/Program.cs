@@ -10,8 +10,8 @@ namespace PasswdGen
         private static string tempPassString;
         private static string passFile = "./passwd.passwd";
         private static string keyToFile;
-        static public List<char> asciiCharAray = new List<char>("!@#$%^&*()abcdefghijklmnopqrstuvwxyz1234567890?;:ABCDEFGHIJKLMNOPQRSTUVWXYZ^&".ToCharArray());
-        static public List<char> passwLetters = new List<char>();
+        private static List<char> asciiCharAray = new List<char>("!@#$%^&*()abcdefghijklmnopqrstuvwxyz1234567890?;:ABCDEFGHIJKLMNOPQRSTUVWXYZ^&".ToCharArray());
+        private static List<char> passwLetters = new List<char>();
         private static Encryption Encrypt = new Encryption();
         private static Decryption Decrypt = new Decryption();
 
