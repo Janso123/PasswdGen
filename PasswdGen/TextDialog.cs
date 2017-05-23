@@ -3,42 +3,41 @@ using System;
 
 namespace PasswdGen
 {
-
-    class TextDialog
+    internal class TextDialog
     {
-        private string oldPasswd;
-        private string placeToLogIn;
-        private string passwdToEncryptDecrypt;
+        private string _oldPasswd;
+        private string _placeToLogIn;
+        private string _passwdToEncryptDecrypt;
 
-        public string passwdInput()
+        public string PasswdInput()
         {
             Console.Clear();
 
             Console.WriteLine("Enter some passwd to generate new passwd");
-            oldPasswd = Console.ReadLine();
-            return oldPasswd;
+            _oldPasswd = Console.ReadLine();
+            return _oldPasswd;
         }
-        public string placeInput()
+        public string PlaceInput()
         {
             Console.Clear();
 
             Console.WriteLine("Enter where you want to use that passwd");
-            placeToLogIn = Console.ReadLine();
-            return placeToLogIn;
+            _placeToLogIn = Console.ReadLine();
+            return _placeToLogIn;
         }
-        public string keyInput()
+        public string KeyInput()
         {
             Console.Clear();
 
             Console.WriteLine("Enter your Key to encrypt / decrypt your passwd storage file \r\n ");
             Console.WriteLine("Key have to be 16 characters long ");
-            passwdToEncryptDecrypt = Console.ReadLine();
-            if (passwdToEncryptDecrypt.Length !=16)
+            _passwdToEncryptDecrypt = Console.ReadLine();
+            if (_passwdToEncryptDecrypt.Length !=16)
             {
-                this.keyInput();
+                this.KeyInput();
             }
             Console.Clear();
-            return passwdToEncryptDecrypt;
+            return _passwdToEncryptDecrypt;
         }
     }
 }

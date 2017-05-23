@@ -1,26 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace PasswdGen
 
 {
-    class Program
+    internal class Program
     {
-        private static string tempPassString;
-        private static string passFile = "./passwd.passwd";
-        private static string keyToFile;
-        private static List<char> asciiCharAray = new List<char>("!@#$%^&*()abcdefghijklmnopqrstuvwxyz1234567890?;:ABCDEFGHIJKLMNOPQRSTUVWXYZ^&".ToCharArray());
-        private static List<char> passwLetters = new List<char>();
-        private static Encryption Encrypt = new Encryption();
-        private static Decryption Decrypt = new Decryption();
+        private static string _tempPassString;
+        public static readonly string PassFile = "./passwd.passwd";
+        private static string _keyToFile;
+        private static readonly List<char> AsciiCharAray = new List<char>("!@#$%^&*()abcdefghijklmnopqrstuvwxyz1234567890?;:ABCDEFGHIJKLMNOPQRSTUVWXYZ^&".ToCharArray());
+        private static List<char> _passwLetters = new List<char>();
+        private static readonly Encryption Encrypt = new Encryption();
+        private static readonly Decryption Decrypt = new Decryption();
+        private static readonly TextDialog Dialog = new TextDialog();
 
-        static void Main(string[] args)
+        private static void Main()
         {
-            while (Menu()) { };
+            while (Menu()) { }
         }
 
-        static public bool Menu()
+        public static bool Menu()
         {
             Console.WriteLine("What do you want to do?");
             Console.WriteLine("1 - Add new Passwd");
@@ -51,47 +53,33 @@ namespace PasswdGen
             }
             return true;
         }
-        static public void NewPasswdDialog()
+        public static void NewPasswdDialog()
         {
-            TextDialog Dialog = new TextDialog();
-
-            keyToFile = Dialog.keyInput();
-            passwLetters = new List<char>(Dialog.passwdInput().ToCharArray());
-            string ret = "Passwd: " + passEncryption() + " Palce: " + Dialog.placeInput() + "\r\n";
-            if (File.Exists(passFile))
+            _keyToFile = Dialog.KeyInput();
+            _passwLetters = new List<char>(Dialog.PasswdInput().ToCharArray());
+            var ret = string.Format("Passwd: {0} Palce: {1}\r\n", PassEncryption(), Dialog.PlaceInput());
+            if (File.Exists(PassFile))
             {
-                tempPassString = Decrypt.File(passFile, keyToFile);
+                _tempPassString = Decrypt.File(PassFile, _keyToFile);
             }
-            tempPassString = tempPassString + ret;
+            _tempPassString = string.Format("{0}{1}", _tempPassString, ret);
             
-            Encrypt.File(tempPassString, passFile, keyToFile);
+            Encrypt.File(_tempPassString, PassFile, _keyToFile);
         }
-        static public void ReadPasswdFile()
+        public static void ReadPasswdFile()
         {
-            TextDialog Dialog = new TextDialog();
-            Decryption EnDe = new Decryption();
-            keyToFile = Dialog.keyInput();
-            Console.WriteLine(Decrypt.File(passFile, keyToFile));
+            _keyToFile = Dialog.KeyInput();
+            Console.WriteLine(Decrypt.File(PassFile, _keyToFile));
         }
 
-        static public string passEncryption()
+        public static string PassEncryption()
         {
-            string encPasswd = "";
-            Random rnd = new Random();
-            for (int i = 0; i < passwLetters.Count; i++)
-            {
-                int randchar = rnd.Next(1, 555) % 6;
-                for (int a = 0; a < asciiCharAray.Count; a++)
-                {
-                    if (asciiCharAray[a] == (passwLetters[i]))
-                    {
-                        char hpa = (Char)(Convert.ToUInt16(asciiCharAray[a]) + randchar);
-                        encPasswd = encPasswd + hpa.ToString();
-                    }
-                }
-            }
+            var rnd = new Random();
+            var randchar = rnd.Next(1, 555) % 6;
 
-            return encPasswd;
+            return _passwLetters.Aggregate("", (current1, t) 
+                => (from t1 in AsciiCharAray where t1 == t select (Char) (Convert.ToUInt16(t1) + randchar)).Aggregate(current1, (current, hpa) 
+                    => string.Format("{0}{1}", current, hpa)));
         }
         
     }

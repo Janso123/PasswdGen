@@ -5,24 +5,24 @@ using System.Text;
 
 namespace PasswdGen
 {
-    class Encryption
+    internal class Encryption
     {
         public void File(string inputString, string outputFile, string skey)
         {
 
             try
             {
-                using (RijndaelManaged aes = new RijndaelManaged())
+                using (var aes = new RijndaelManaged())
                 {
-                    byte[] key = ASCIIEncoding.UTF8.GetBytes(skey);
-                    byte[] IV = ASCIIEncoding.UTF8.GetBytes(skey);
-                    using (FileStream fsCrypt = new FileStream(outputFile, FileMode.Create))
+                    var key = Encoding.UTF8.GetBytes(skey);
+                    var iv = Encoding.UTF8.GetBytes(skey);
+                    using (var fsCrypt = new FileStream(outputFile, FileMode.Create))
                     {
-                        using (ICryptoTransform encryptor = aes.CreateEncryptor(key, IV))
+                        using (var encryptor = aes.CreateEncryptor(key, iv))
                         {
-                            using (CryptoStream cs = new CryptoStream(fsCrypt, encryptor, CryptoStreamMode.Write))
+                            using (var cs = new CryptoStream(fsCrypt, encryptor, CryptoStreamMode.Write))
                             {
-                                using (MemoryStream msIn = new MemoryStream(Encoding.UTF8.GetBytes(inputString)))
+                                using (var msIn = new MemoryStream(Encoding.UTF8.GetBytes(inputString)))
                                 {
                                     int data;
                                     while ((data = msIn.ReadByte()) != -1)

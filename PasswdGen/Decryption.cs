@@ -5,26 +5,26 @@ using System.Text;
 
 namespace PasswdGen
 {
-    class Decryption
+    internal class Decryption
     {
-        private string srtOut;
+        private string _srtOut;
         public string File(string inputFile, string skey)
         {
             try
             {
-                using (RijndaelManaged aes = new RijndaelManaged())
+                using (var aes = new RijndaelManaged())
                 {
-                    byte[] key = ASCIIEncoding.UTF8.GetBytes(skey);
+                    var key = Encoding.UTF8.GetBytes(skey);
 
-                    byte[] IV = ASCIIEncoding.UTF8.GetBytes(skey);
+                    var iv = Encoding.UTF8.GetBytes(skey);
 
-                    using (FileStream fsCrypt = new FileStream(inputFile, FileMode.Open))
+                    using (var fsCrypt = new FileStream(inputFile, FileMode.Open))
                     {
-                        using (MemoryStream msOut = new MemoryStream())
+                        using (var msOut = new MemoryStream())
                         {
-                            using (ICryptoTransform decryptor = aes.CreateDecryptor(key, IV))
+                            using (var decryptor = aes.CreateDecryptor(key, iv))
                             {
-                                using (CryptoStream cs = new CryptoStream(fsCrypt, decryptor, CryptoStreamMode.Read))
+                                using (var cs = new CryptoStream(fsCrypt, decryptor, CryptoStreamMode.Read))
                                 {
                                     int data;
                                     while ((data = cs.ReadByte()) != -1)
@@ -32,8 +32,8 @@ namespace PasswdGen
                                         msOut.WriteByte((byte)data);
                                     }
                                     msOut.Position = 0;
-                                    byte[] t = msOut.ToArray();
-                                    srtOut = Encoding.UTF8.GetString(t);
+                                    var t = msOut.ToArray();
+                                    _srtOut = Encoding.UTF8.GetString(t);
                                 }
                             }
                         }
@@ -44,7 +44,7 @@ namespace PasswdGen
             {
                 Console.WriteLine($"Error: {ex}");
             }
-            return srtOut;
+            return _srtOut;
         }
     }
 }
